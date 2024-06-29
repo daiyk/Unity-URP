@@ -1,0 +1,4 @@
+repository "CustomURP@daiyukun2013@cloud"
+  path "/"
+    br "/main"
+    co "/main"
