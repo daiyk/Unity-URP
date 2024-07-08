@@ -21,25 +21,32 @@ public partial class CameraRenderer
         
         _context = context;
         _camera = camera;
-        SetBufferName();
-		EmitUIGeometryForRender();
+
 		if (!Cull())
             return;
-        SetUpCameraProperties();
-        _buffer.ClearRenderTarget(true, true, Color.clear);
+        SetUp();
         _buffer.BeginSample(bufferName);
         ExecuteBuffer();
         
         DrawVisibleGeometry();
         DrawUnsupportedShaders();
         DrawGizmos();
-        
-
+ 
         _buffer.EndSample(bufferName);
         ExecuteBuffer();
 
         Submit();
     }
+
+    public void SetUp()
+    {
+		EmitUIGeometryForRender(); //emit the UI geometry for rendering
+		SetBufferName(); //set the buffer name to the camera name
+        CameraClearFlags flag = _camera.clearFlags;
+		SetUpCameraProperties();
+		_buffer.ClearRenderTarget(flag<=CameraClearFlags.Depth, flag<=CameraClearFlags.Color,
+			flag == CameraClearFlags.Color ? _camera.backgroundColor.linear : Color.clear); 
+	}
 
     public void SetBufferName()
     {
