@@ -45,12 +45,16 @@ jobs:
         with:
           targetPlatform: iOS
           unityVersion: auto
-       # Output
+      
+      # debug
+      - name: output build informationm
+        run: |
+          echo "Project Version: ${{ steps.Build_Step.outputs.buildVersion}}"
+          echo "Engine Exit Code: ${{ steps.Build_Step.outputs.engineExitCode}}"
+      
+      # Output
       - uses: actions/upload-artifact@v3
         with:
           name: Build
           path: build
-      - run: |
-        echo 'Project Version: ${{ steps.Build_Step.outputs.buildVersion}}'
-        echo 'Engine Exit Code: ${{ steps.Build_Step.outputs.engineExitCode}}'
 
